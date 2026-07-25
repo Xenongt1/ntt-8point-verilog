@@ -202,6 +202,20 @@ Each piece was tested in isolation before integration:
    hand-verified NTT output, with the input loaded from a text file and
    the output written back to one (`tb/tb_ntt_top.v`).
 
+### The hand verification
+
+Before any Verilog was written, all 3 stages and all 12 butterflies were
+worked through by hand with the mod-17 arithmetic explicit at every step.
+Inputs [1..8] on the left, twiddle powers annotated on the diagonals, and
+the circled values on the right are the expected outputs:
+
+![Hand-worked 3-stage butterfly diagram for the 8-point NTT mod 17](docs/hand-verification.jpg)
+
+Those circled outputs — **2, 13, 12, 14, 1, 6, 3, 8** — are exactly what
+the testbench asserts against, and exactly what the hardware produces.
+The result was also cross-checked against an independent Python software
+reference model.
+
 ## Future work
 
 - **Inverse NTT (INTT).** Same datapath with inverse twiddles

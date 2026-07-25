@@ -1,0 +1,10 @@
+# Icarus Verilog compiled simulation binaries
+sim_*
+
+# Simulator waveform/log output
+*.vcd
+*.vvp
+
+# OS/editor cruft
+.DS_Store
+*.swp

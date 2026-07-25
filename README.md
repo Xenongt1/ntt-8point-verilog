@@ -57,8 +57,14 @@ EDA tools, no license server.
 
 Verify the install with `iverilog -V`.
 
-Run all commands from the repository root, so the testbench's relative
-file paths (`input/input.mem`, `output/output.mem`) resolve correctly.
+Run everything from the repository root, so the testbench's relative
+file paths (`input/input.mem`, `output/output.mem`) resolve correctly:
+
+```bash
+bash run.sh
+```
+
+Or compile and run each testbench individually:
 
 ```bash
 # Butterfly unit alone

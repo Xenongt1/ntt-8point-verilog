@@ -18,6 +18,11 @@ Built and verified with [Icarus Verilog](http://iverilog.icarus.com/)
 ├── README.md              - this file
 ├── docs/
 │   └── ntt-architecture.png  - block diagram (above)
+├── run.sh                 - build and run all three testbenches
+├── tools/
+│   └── ntt_reference.py     - software reference model: computes the NTT
+│                              from its definition, shows the bit-reversal
+│                              mapping, and diffs against output/output.mem
 ├── rtl/
 │   ├── ntt_butterfly.v      - the single reusable butterfly datapath
 │   │                          (modular add / subtract / multiply-reduce)
@@ -124,10 +129,51 @@ ALL 8 OUTPUTS MATCH THE HAND-VERIFIED RESULT - PASS
 Output written to output/output.mem
 ```
 
+### Output ordering — read this before checking the result
+
+**The output is in bit-reversed index order, not natural order.** This is
+normal for this architecture, but it means a direct comparison against
+`X[k] = sum_j x[j]*omega^(jk) mod q` will appear to disagree until the
+permutation is applied.
+
+For input [1,2,3,4,5,6,7,8]:
+
+```
+NTT in natural order      : 2   1  12   3  13  6  14  8
+What this design outputs  : 2  13  12  14   1  6   3  8
+```
+
+Same eight values, permuted. `output[i] = X[bitrev(i)]`:
+
+| output index | binary | reversed | = X[k] | value |
+| --- | --- | --- | --- | --- |
+| 0 | 000 | 000 | X[0] | 2 |
+| 1 | 001 | 100 | X[4] | 13 |
+| 2 | 010 | 010 | X[2] | 12 |
+| 3 | 011 | 110 | X[6] | 14 |
+| 4 | 100 | 001 | X[1] | 1 |
+| 5 | 101 | 101 | X[5] | 6 |
+| 6 | 110 | 011 | X[3] | 3 |
+| 7 | 111 | 111 | X[7] | 8 |
+
+Bit-reversed output is deliberate, not an artifact. A
+decimation-in-frequency NTT takes naturally-ordered input and produces
+bit-reversed output; adding a reordering network would cost hardware for no
+benefit in the usual pipeline, where the inverse transform consumes
+bit-reversed input anyway (NTT -> pointwise multiply -> INTT needs no
+reordering at either end). Verify it yourself:
+
+```bash
+python3 tools/ntt_reference.py
+```
+
+That computes the transform from the definition with no butterfly structure
+involved, applies the permutation, and diffs against `output/output.mem`.
+
 This result was independently verified by hand (working through every
 butterfly of all 3 stages with the mod-17 arithmetic explicit at each
-step) and cross-checked against a separate Python software reference
-model before any Verilog was written.
+step) and cross-checked against the Python software reference model in
+`tools/ntt_reference.py` before any Verilog was written.
 
 Compiled simulation binaries (`sim_butterfly`, `sim_addr`, `sim_top`) are
 gitignored - regenerate them with the commands above rather than
@@ -166,7 +212,35 @@ See the [block diagram](docs/ntt-architecture.png) above.
 
 ## Design decisions and trade-offs
 
-1. **Hardcoded vs. computed addressing.** The address generator is a
+1. **Butterfly form: Gentleman-Sande, not Cooley-Tukey.** There are two
+   standard butterflies, differing in where the twiddle is applied:
+
+   ```
+   Cooley-Tukey (CT)     u = (a + b*w) mod q     twiddle applied to b first
+                          v = (a - b*w) mod q
+
+   Gentleman-Sande (GS)  u = (a + b) mod q       twiddle applied to the
+                          v = ((a - b) * w) mod q   difference, afterwards
+   ```
+
+   This design uses **GS**, because GS is the form that pairs with a
+   decimation-in-frequency dataflow — and the stage schedule here is DIF:
+   distances run 4 -> 2 -> 1 (large to small), with twiddle powers
+   `w^0 w^1 w^2 w^3` in stage 1, `w^0 w^2 w^0 w^2` in stage 2, and `w^0`
+   throughout stage 3.
+
+   The two choices are not interchangeable. Substituting a CT butterfly
+   into this exact schedule yields `[0,13,5,6,14,6,10,5]`, which is not a
+   valid NTT under any index ordering — the twiddle schedule and the
+   butterfly form have to agree. `tools/ntt_reference.py` runs both and
+   prints the comparison.
+
+   CT with a decimation-in-time schedule (distances 1 -> 2 -> 4, twiddles
+   in the mirrored order) is the equally valid alternative; it consumes
+   bit-reversed input and emits natural order, i.e. it moves the
+   permutation from the output to the input rather than removing it.
+
+2. **Hardcoded vs. computed addressing.** The address generator is a
    12-entry lookup table rather than real divide/modulo hardware. This
    is simple and exhaustively verifiable for a fixed n=8, but doesn't
    generalize: supporting n=16 or n=32 would require real arithmetic
@@ -176,19 +250,28 @@ See the [block diagram](docs/ntt-architecture.png) above.
    generalization would only need bit-shifts, not real division - so
    it's a cheap upgrade path, not a fundamental redesign.
 
-2. **Behavioral modular multiplication.** Using Verilog's `%` operator
+3. **Behavioral modular multiplication.** Using Verilog's `%` operator
    for the multiplier's reduction step is only reasonable because q=17
    is tiny. For a cryptographically-sized prime, this would need to be
    replaced with a real reduction circuit (Barrett or Montgomery
    reduction are the standard choices).
 
-3. **One-cycle-per-butterfly, fully sequential.** This design
+4. **One-cycle-per-butterfly, fully sequential.** This design
    prioritizes minimal hardware (one butterfly unit total) over speed
    (12+1 cycles for 8 points). A pipelined design, or one with multiple
    parallel butterfly units, would trade more area for lower latency.
 
-4. **Parallel input load.** All 8 inputs load in a single cycle via a
+5. **Parallel input load.** All 8 inputs load in a single cycle via a
    packed 40-bit bus, rather than serially through a narrower port.
+
+6. **Flat register file instead of RAM.** The 8 working values live in a
+   directly-addressed 5-bit x 8 register array, so both butterfly operands
+   are read and both results written in the same cycle with no port
+   conflicts and no read latency. A dual-port RAM with read/write
+   scheduling is the right structure once the coefficient array is too
+   large for registers, but at n=8 the address sequencing and pipeline
+   bubbles would cost more than the registers do. This is the choice that
+   would change first when scaling to a cryptographically-sized n.
 
 ## Verification strategy
 

@@ -6,6 +6,11 @@
 //   3. Let the FSM run all 3 stages (12 clock cycles)
 //   4. Wait for done, unpack the result
 //   5. Compare against the expected output [2, 13, 12, 14, 1, 6, 3, 8]
+//
+// NOTE ON ORDERING: this design is decimation-in-frequency, so the result
+// is in BIT-REVERSED index order. output[i] holds X[bitrev(i)]. The NTT in
+// natural order is [2, 1, 12, 3, 13, 6, 14, 8] - the same eight values
+// permuted. See README "Output ordering" and tools/ntt_reference.py.
 
 `timescale 1ns/1ps
 
@@ -40,7 +45,7 @@ module tb_ntt_top;
         // Load input vector from the text file
         $readmemb("input/input.mem", mem_in);
 
-        // Set up the expected answer
+        // Expected answer, in the bit-reversed order this design emits
         expected[0] = 5'd2;  expected[1] = 5'd13; expected[2] = 5'd12; expected[3] = 5'd14;
         expected[4] = 5'd1;  expected[5] = 5'd6;  expected[6] = 5'd3;  expected[7] = 5'd8;
 

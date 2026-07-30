@@ -18,3 +18,11 @@ echo
 echo "$ vvp sim_top"
 iverilog -o sim_top $RTL tb/tb_ntt_top.v
 vvp sim_top
+
+# Cross-check the hardware output against the software reference model.
+# Skipped rather than failed if python3 is unavailable.
+if command -v python3 >/dev/null 2>&1; then
+    echo
+    echo "$ python3 tools/ntt_reference.py"
+    python3 tools/ntt_reference.py
+fi

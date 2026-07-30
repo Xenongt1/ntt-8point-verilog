@@ -9,5 +9,6 @@ sim_*
 .DS_Store
 *.swp
 
-# Private working notes - not for publication
+# Private working notes and study material - not for publication
 NOTES.md
+NTT-Interview-Study-Guide.pdf

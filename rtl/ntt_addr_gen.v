@@ -1,15 +1,14 @@
 // ntt_addr_gen.v
 //
-// This is a direct hardware lookup of the exact table you built by hand
-// (the pair-and-twiddle table). Rather than computing "distance",
-// "block_start", etc. with actual divide/modulo hardware (which is
-// overkill for a fixed n=8), we hardcode the 12 known butterfly
-// operations across the 3 stages as a small combinational ROM/case
-// statement. This is a deliberate simplicity choice worth mentioning in
-// the interview: it's cheap and easy to verify for a fixed, small n,
-// but doesn't automatically generalize to n=16, 32, etc. - a real
-// arithmetic address generator (using the i*(n/block_size) formula)
-// would be needed for that, and is a natural "future work" extension.
+// Combinational lookup of which two register-file positions and which
+// twiddle power each butterfly needs.
+//
+// Rather than computing distance and block_start with divide/modulo
+// hardware, the 12 butterfly operations across the 3 stages are encoded
+// directly as a case statement. For a fixed n=8 this is cheap and
+// exhaustively verifiable. It does not generalize to n=16 or n=32, which
+// would need arithmetic address generation using
+// twiddle_power = i * (n / block_size) - see README "Future work".
 //
 // stage:   0 = stage 1 (distance 4)
 //          1 = stage 2 (distance 2)

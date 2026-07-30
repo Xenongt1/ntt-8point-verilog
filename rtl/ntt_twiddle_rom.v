@@ -1,13 +1,11 @@
 // ntt_twiddle_rom.v
 //
-// Stores the twiddle table you verified by hand:
+// ROM-based twiddle storage for omega=9, q=17:
 //   omega^0=1, omega^1=9, omega^2=13, omega^3=15,
 //   omega^4=16, omega^5=8, omega^6=4, omega^7=2
 //
-// This is "ROM-based twiddle storage" from the task requirements -
-// precomputed once (in software, by us), then just looked up by index
-// in hardware. No multiplication ever happens to CREATE these values
-// at runtime; they're baked in.
+// All 8 values are precomputed and looked up by index. No multiplication
+// happens at runtime to create a twiddle value.
 
 module ntt_twiddle_rom (
     input  wire [2:0] power,   // which power of omega (0..7)

@@ -1,8 +1,8 @@
 // tb_butterfly.v
 //
-// Standalone test of JUST the butterfly unit, before it's wired into
-// anything bigger. Feeds in the exact 4 stage-1 pairs you already
-// verified by hand, and checks the outputs match.
+// Standalone test of the butterfly unit in isolation, before integration.
+// Drives the 4 stage-1 operand pairs and checks both outputs against the
+// independently derived expected values.
 
 `timescale 1ns/1ps
 
@@ -13,21 +13,21 @@ module tb_butterfly;
 
     integer errors = 0;    // running count of mismatches
 
-    // dut = "device under test" - the butterfly module we're checking
+    // Device under test
     ntt_butterfly dut (
         .a(a), .b(b), .tw(tw),
         .u(u), .v(v)
     );
 
-    // check() drives one (a, b, tw) triple in and compares both outputs
-    // against the values you already worked out by hand for that pair.
+    // check() drives one (a, b, tw) triple and compares both outputs
+    // against the expected values for that pair.
     task check(input [4:0] a_in, input [4:0] b_in, input [4:0] tw_in,
                input [4:0] u_expected, input [4:0] v_expected);
         begin
             a = a_in; b = b_in; tw = tw_in;
             #1; // ntt_butterfly is purely combinational (no clock), so
                 // this tiny delay just lets the simulator settle the
-                // logic before we read u and v
+                // logic before u and v are sampled
             if (u !== u_expected || v !== v_expected) begin
                 $display("FAIL: a=%0d b=%0d tw=%0d -> got u=%0d v=%0d, expected u=%0d v=%0d",
                           a_in, b_in, tw_in, u, v, u_expected, v_expected);
@@ -40,7 +40,7 @@ module tb_butterfly;
     endtask
 
     initial begin
-        // Stage 1 pairs, hand-verified earlier:
+        // Stage 1 pairs:
         check(1, 5, 1,  6, 13);   // pair (0,4), tw=omega^0=1
         check(2, 6, 9,  8, 15);   // pair (1,5), tw=omega^1=9
         check(3, 7, 13, 10, 16);  // pair (2,6), tw=omega^2=13

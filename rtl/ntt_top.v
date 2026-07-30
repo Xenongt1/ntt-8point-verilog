@@ -1,11 +1,11 @@
 // ntt_top.v
 //
-// The complete iterative 8-point NTT accelerator. This is the "reuse one
-// butterfly unit across all stages" design from the task doc: there is
-// exactly ONE ntt_butterfly instance here, and the FSM below feeds it a
-// different pair of memory values (and a different twiddle) every clock
-// cycle, for 12 cycles total (4 butterflies x 3 stages), instead of
-// building 12 separate butterfly circuits.
+// The complete iterative 8-point NTT accelerator.
+//
+// A single ntt_butterfly instance is reused across all stages: the FSM
+// below feeds it a different pair of register-file values (and a different
+// twiddle) every clock cycle, for 12 cycles total (4 butterflies x 3
+// stages), rather than instantiating 12 separate butterfly circuits.
 //
 // Interface:
 //   clk, rst        : standard synchronous, active-high reset
@@ -23,8 +23,8 @@ module ntt_top (
     output wire [39:0] output_bus
 );
 
-    // ---- Register file: the 8 working slots, reused in-place across
-    // ---- all 3 stages, exactly like the Python reference model. ----
+    // ---- Register file: the 8 working slots, updated in place across
+    // ---- all 3 stages. No separate storage for intermediates. ----
     reg [4:0] mem [0:7];
 
     // ---- FSM state ----
@@ -33,12 +33,12 @@ module ntt_top (
                S_DONE = 2'd2;
 
     reg [1:0] state;
-    reg [1:0] stage;    // which of the 3 stages we're on (0,1,2)
+    reg [1:0] stage;    // which of the 3 stages is active (0,1,2)
     reg [1:0] counter;  // which of the 4 butterflies within this stage (0..3)
 
     integer i;
 
-    // ---- Address generator: tells us which two memory positions and
+    // ---- Address generator: selects which two register-file slots and
     // ---- which twiddle power this cycle's butterfly needs ----
     wire [2:0] idx1_w, idx2_w, twpow_w;
     ntt_addr_gen addr_gen_inst (
@@ -86,9 +86,8 @@ module ntt_top (
                 end
 
                 S_RUN: begin
-                    // Write this cycle's butterfly result back in place -
-                    // the same "overwrite the same slots" trick from the
-                    // software reference model.
+                    // Write this cycle's butterfly result back into the
+                    // same two slots it was read from.
                     mem[idx1_w] <= u_w;
                     mem[idx2_w] <= v_w;
 

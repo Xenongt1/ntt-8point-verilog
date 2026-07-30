@@ -8,3 +8,6 @@ sim_*
 # OS/editor cruft
 .DS_Store
 *.swp
+
+# Private working notes - not for publication
+NOTES.md

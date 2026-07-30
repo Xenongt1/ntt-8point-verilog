@@ -5,8 +5,7 @@
 //   2. Reset the design, pulse start
 //   3. Let the FSM run all 3 stages (12 clock cycles)
 //   4. Wait for done, unpack the result
-//   5. Compare against the hand-verified expected output
-//      [2, 13, 12, 14, 1, 6, 3, 8]
+//   5. Compare against the expected output [2, 13, 12, 14, 1, 6, 3, 8]
 
 `timescale 1ns/1ps
 
@@ -21,7 +20,7 @@ module tb_ntt_top;
 
     reg  [4:0]  mem_in  [0:7];   // loaded from the input file
     reg  [4:0]  mem_out [0:7];   // unpacked from output_bus for checking
-    reg  [4:0]  expected [0:7];  // hand-verified reference answer
+    reg  [4:0]  expected [0:7];  // reference answer
 
     integer i;
     integer errors;
@@ -41,7 +40,7 @@ module tb_ntt_top;
         // Load input vector from the text file
         $readmemb("input/input.mem", mem_in);
 
-        // Set up the hand-verified expected answer
+        // Set up the expected answer
         expected[0] = 5'd2;  expected[1] = 5'd13; expected[2] = 5'd12; expected[3] = 5'd14;
         expected[4] = 5'd1;  expected[5] = 5'd6;  expected[6] = 5'd3;  expected[7] = 5'd8;
 
@@ -92,9 +91,9 @@ module tb_ntt_top;
         else
             $display("\n%0d POSITION(S) MISMATCHED - FAIL", errors);
 
-        // Also write the result out to a text file, same 5-bit binary
-        // format as the input, so the full loop (file in -> hardware ->
-        // file out) is demonstrated, not just console output.
+        // Write the result out to a text file in the same 5-bit binary
+        // format as the input, demonstrating the full file-in to file-out
+        // path rather than console output alone.
         $writememb("output/output.mem", mem_out);
         $display("Output written to output/output.mem");
 

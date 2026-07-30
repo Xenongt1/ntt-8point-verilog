@@ -1,6 +1,6 @@
 // tb_addr_gen.v
-// Walks all 3 stages x 4 counters and checks the addresses/twiddle
-// powers match the reference table exactly.
+// Walks all 3 stages x 4 counters and checks that the addresses and
+// twiddle powers match the reference table exactly.
 
 `timescale 1ns/1ps
 
@@ -10,23 +10,22 @@ module tb_addr_gen;
     wire [2:0] idx1, idx2, twpow;  // observe the DUT's outputs
     integer errors = 0;            // running count of mismatches
 
-    // dut = "device under test" - the module we're actually checking
+    // Device under test
     ntt_addr_gen dut (
         .stage(stage), .counter(counter),
         .idx1(idx1), .idx2(idx2), .twpow(twpow)
     );
 
-    // check() is a reusable "one test case" helper: drive one (stage,
-    // counter) combination in, wait for the combinational logic to
-    // settle, then compare every output against the hand-derived
-    // expected value.
+    // check() drives one (stage, counter) combination, waits for the
+    // combinational logic to settle, then compares every output against
+    // the expected value.
     task check(input [1:0] s, input [1:0] c,
                input [2:0] e_idx1, input [2:0] e_idx2, input [2:0] e_twpow);
         begin
             stage = s; counter = c;
             #1; // no clock here - ntt_addr_gen is purely combinational,
                 // so this tiny delay just lets the simulator settle the
-                // logic before we read the outputs
+                // logic before the outputs are sampled
             if (idx1 !== e_idx1 || idx2 !== e_idx2 || twpow !== e_twpow) begin
                 $display("FAIL: stage=%0d counter=%0d -> got (%0d,%0d,tw^%0d), expected (%0d,%0d,tw^%0d)",
                           s, c, idx1, idx2, twpow, e_idx1, e_idx2, e_twpow);

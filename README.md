@@ -36,9 +36,17 @@ Built and verified with [Icarus Verilog](http://iverilog.icarus.com/)
 │   ├── tb_butterfly.v       - standalone test of the butterfly unit alone
 │   ├── tb_addr_gen.v        - standalone test of the address generator
 │   │                          alone
+│   ├── tb_stage_fault.v     - one stage-register bit flip, traced
+│   ├── tb_data_fault.v      - one data-register bit flip, traced
 │   └── tb_ntt_top.v         - full-system test: loads input from a file,
 │                              runs the whole design, checks the output,
 │                              writes the result to a file
+├── research/              - fault-injection experiment scripts (see
+│                              "Fault-injection experiments" below)
+├── research_logs/         - single-fault demonstrations (stage, data)
+├── research_results/      - 32-input fault sweep and position ranking
+├── research_validation_20261015_512/ - 512-input held-out validation
+├── research_checker_20261016_128/    - RTL checker experiment (128 inputs)
 ├── input/
 │   └── input.mem            - test vector [1,2,3,4,5,6,7,8] as 5-bit
 │                              binary, one value per line
@@ -298,6 +306,87 @@ Those circled outputs — **2, 13, 12, 14, 1, 6, 3, 8** — are exactly what
 the testbench asserts against, and exactly what the hardware produces.
 The result was also cross-checked against an independent Python software
 reference model.
+
+## Fault-injection experiments
+
+These experiments ask how a single stored-bit fault changes the result of
+this accelerator, and whether a small output check can catch it. All faults
+are **simulated bit flips in RTL registers**, not physical EM attacks.
+
+### Fault model
+
+- One bit flip per run, applied by the testbench at one of the 12 butterfly
+  cycles.
+- Targets: all 46 stored bits of `ntt_top`: `state` (2), `stage` (2),
+  `counter` (2) and the 8 x 5-bit register file `mem` (40).
+- Correct results come from the NTT's mathematical definition in Python
+  (`reference()` in `research/run_fault_sweep.py`), not from the RTL.
+- Each run is classified by: did it finish within 40 cycles, did it finish in
+  the normal 12 cycles, and is the output correct. The "timing and range"
+  filter keeps outputs that finished in 12 cycles with every value in 0..16.
+
+### Results
+
+| Experiment | Inputs | Fault cases | Result |
+| --- | --- | --- | --- |
+| Selection sweep | 32 (14 edge cases, 18 random, seed 20261013) | 17,664 | 14,493 wrong outputs pass timing and range; all come from `mem` faults |
+| Position ranking | same | same | Checking hardware positions (3, 6) catches 11,157 of them; (3, 7) ties |
+| Held-out validation | 512 new random (seed 20261015) | 282,624 | (3, 6) catches 177,773 of 230,620 (77.1%) |
+| RTL checker, accelerator faults | 128 new random (seed 20261016) | 70,656 | 44,509 of 57,825 caught, 13,316 missed |
+| RTL checker, checker faults only | same | 15,360 | all 15,360 correct results rejected (false alarms) |
+| RTL checker, both faulted | same | 70,656 | 1,591 of 57,825 missed |
+| RTL checker, decision forced to accept | same | 70,656 | all 57,825 pass |
+
+Positions refer to the hardware's bit-reversed output order: hardware
+position 3 is X[6] and position 6 is X[3]. The checker
+(`research_checker_20261016_128/ntt_output_checker.v`) computes both values
+directly from the input bus as weighted sums mod 17 and stores them in two
+5-bit registers.
+
+Two single-fault traces are in `research_logs/`. A `stage` flip from 2 to 3
+(an unused value; the address generator falls to its default pair (0,0))
+makes the run take 24 cycles and return a wrong result. A `mem[1]` flip
+returns a wrong result in the normal 12 cycles.
+
+### Limits
+
+- Single bit flips in registers only: no multi-bit faults, no faults in
+  combinational logic or the twiddle ROM.
+- Checker input capture, the checker's arithmetic, clock, reset, start and the
+  shared input bus are not faulted. In the both-faulted mode, the checker bit
+  is chosen by a fixed rule, `(vector + 3*target + bit + cycle) % 10`, not
+  every combination.
+- Timing and range filters are applied offline, not in hardware.
+- Every fault case is counted equally, so the rates are counts over simulated
+  cases, not probabilities of a real attack succeeding.
+- No synthesis, area or timing results, and no cryptographic exploit.
+
+### Reproduce
+
+Requires Python 3 and Icarus Verilog. Run from the repository root. Each
+script refuses to overwrite an existing results folder, so delete or rename
+it first, or use a new seed.
+
+```bash
+python3 research/run_fault_sweep.py
+python3 research/compare_checks.py
+python3 research/run_validation_sweep.py --vectors 512 --seed 20261015
+python3 research/compare_checks.py --selection research_results \
+    --validation research_validation_20261015_512
+python3 research/run_checker_experiment.py --vectors 128 --seed 20261016
+```
+
+Single-fault traces:
+
+```bash
+iverilog -g2012 -s tb_stage_fault -o sim_stage_fault rtl/ntt_butterfly.v \
+    rtl/ntt_twiddle_rom.v rtl/ntt_addr_gen.v rtl/ntt_top.v tb/tb_stage_fault.v
+vvp sim_stage_fault
+
+iverilog -g2012 -s tb_data_fault -o sim_data_fault rtl/ntt_butterfly.v \
+    rtl/ntt_twiddle_rom.v rtl/ntt_addr_gen.v rtl/ntt_top.v tb/tb_data_fault.v
+vvp sim_data_fault
+```
 
 ## Future work
 

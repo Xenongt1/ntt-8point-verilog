@@ -1,0 +1,328 @@
+{
+  "scope": "Ideal comparison coverage after timing/range filtering, not hardware protection",
+  "counts": {
+    "cases": 17664,
+    "no_done": 768,
+    "correct_completed": 128,
+    "wrong_completed": 16768,
+    "wrong_passing_timing_range": 14493
+  },
+  "selected": {
+    "1": [
+      6
+    ],
+    "2": [
+      3,
+      6
+    ]
+  },
+  "csv_sha256": "94f9483cfc429d1c48dafd675e91664f813646a141929fb8da3cf9c3f527a825",
+  "candidates": [
+    {
+      "positions": [
+        3,
+        6
+      ],
+      "caught": 11157,
+      "remaining": 3336
+    },
+    {
+      "positions": [
+        3,
+        7
+      ],
+      "caught": 11157,
+      "remaining": 3336
+    },
+    {
+      "positions": [
+        2,
+        6
+      ],
+      "caught": 11151,
+      "remaining": 3342
+    },
+    {
+      "positions": [
+        2,
+        7
+      ],
+      "caught": 11151,
+      "remaining": 3342
+    },
+    {
+      "positions": [
+        0,
+        6
+      ],
+      "caught": 10972,
+      "remaining": 3521
+    },
+    {
+      "positions": [
+        0,
+        7
+      ],
+      "caught": 10972,
+      "remaining": 3521
+    },
+    {
+      "positions": [
+        3,
+        5
+      ],
+      "caught": 10970,
+      "remaining": 3523
+    },
+    {
+      "positions": [
+        3,
+        4
+      ],
+      "caught": 10967,
+      "remaining": 3526
+    },
+    {
+      "positions": [
+        2,
+        5
+      ],
+      "caught": 10964,
+      "remaining": 3529
+    },
+    {
+      "positions": [
+        2,
+        4
+      ],
+      "caught": 10961,
+      "remaining": 3532
+    },
+    {
+      "positions": [
+        1,
+        6
+      ],
+      "caught": 10945,
+      "remaining": 3548
+    },
+    {
+      "positions": [
+        1,
+        7
+      ],
+      "caught": 10945,
+      "remaining": 3548
+    },
+    {
+      "positions": [
+        0,
+        5
+      ],
+      "caught": 10785,
+      "remaining": 3708
+    },
+    {
+      "positions": [
+        0,
+        4
+      ],
+      "caught": 10782,
+      "remaining": 3711
+    },
+    {
+      "positions": [
+        1,
+        5
+      ],
+      "caught": 10758,
+      "remaining": 3735
+    },
+    {
+      "positions": [
+        1,
+        4
+      ],
+      "caught": 10755,
+      "remaining": 3738
+    },
+    {
+      "positions": [
+        5,
+        6
+      ],
+      "caught": 8869,
+      "remaining": 5624
+    },
+    {
+      "positions": [
+        5,
+        7
+      ],
+      "caught": 8869,
+      "remaining": 5624
+    },
+    {
+      "positions": [
+        4,
+        6
+      ],
+      "caught": 8866,
+      "remaining": 5627
+    },
+    {
+      "positions": [
+        4,
+        7
+      ],
+      "caught": 8866,
+      "remaining": 5627
+    },
+    {
+      "positions": [
+        0,
+        3
+      ],
+      "caught": 8063,
+      "remaining": 6430
+    },
+    {
+      "positions": [
+        0,
+        2
+      ],
+      "caught": 8057,
+      "remaining": 6436
+    },
+    {
+      "positions": [
+        1,
+        3
+      ],
+      "caught": 8036,
+      "remaining": 6457
+    },
+    {
+      "positions": [
+        1,
+        2
+      ],
+      "caught": 8030,
+      "remaining": 6463
+    },
+    {
+      "positions": [
+        6
+      ],
+      "caught": 7679,
+      "remaining": 6814
+    },
+    {
+      "positions": [
+        7
+      ],
+      "caught": 7679,
+      "remaining": 6814
+    },
+    {
+      "positions": [
+        6,
+        7
+      ],
+      "caught": 7679,
+      "remaining": 6814
+    },
+    {
+      "positions": [
+        4,
+        5
+      ],
+      "caught": 7619,
+      "remaining": 6874
+    },
+    {
+      "positions": [
+        5
+      ],
+      "caught": 7492,
+      "remaining": 7001
+    },
+    {
+      "positions": [
+        4
+      ],
+      "caught": 7489,
+      "remaining": 7004
+    },
+    {
+      "positions": [
+        2,
+        3
+      ],
+      "caught": 6896,
+      "remaining": 7597
+    },
+    {
+      "positions": [
+        0,
+        1
+      ],
+      "caught": 6825,
+      "remaining": 7668
+    },
+    {
+      "positions": [
+        3
+      ],
+      "caught": 6650,
+      "remaining": 7843
+    },
+    {
+      "positions": [
+        2
+      ],
+      "caught": 6644,
+      "remaining": 7849
+    },
+    {
+      "positions": [
+        0
+      ],
+      "caught": 6465,
+      "remaining": 8028
+    },
+    {
+      "positions": [
+        1
+      ],
+      "caught": 6438,
+      "remaining": 8055
+    }
+  ],
+  "validation": {
+    "counts": {
+      "cases": 282624,
+      "no_done": 12288,
+      "wrong_completed": 270324,
+      "wrong_passing_timing_range": 230620,
+      "correct_completed": 12
+    },
+    "fixed_choices": {
+      "1": {
+        "positions": [
+          6
+        ],
+        "caught": 122274,
+        "remaining": 108346
+      },
+      "2": {
+        "positions": [
+          3,
+          6
+        ],
+        "caught": 177773,
+        "remaining": 52847
+      }
+    }
+  }
+}

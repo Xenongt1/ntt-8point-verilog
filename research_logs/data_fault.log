@@ -1,0 +1,16 @@
+
+CASE fault_enabled=0
+RESULT done=1 cycles=12 matches_reference=1
+OUTPUT mem[0..7]: 2 13 12 14 1 6 3 8
+
+CASE fault_enabled=1
+TRACE completed_cycles=8 stage=2 counter=0 mem[0]=16 done=0
+BEFORE FAULT: mem[1]=3
+AFTER FAULT: mem[1]=2
+TRACE completed_cycles=9 stage=2 counter=1 mem[0]=1 done=0
+TRACE completed_cycles=10 stage=2 counter=2 mem[0]=1 done=0
+TRACE completed_cycles=11 stage=2 counter=3 mem[0]=1 done=0
+TRACE completed_cycles=12 stage=2 counter=0 mem[0]=1 done=1
+RESULT done=1 cycles=12 matches_reference=0
+OUTPUT mem[0..7]: 1 14 12 14 1 6 3 8
+tb/tb_data_fault.v:86: $finish called at 320000 (1ps)

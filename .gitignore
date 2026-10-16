@@ -12,3 +12,7 @@ sim_*
 # Private working notes and study material - not for publication
 NOTES.md
 NTT-Interview-Study-Guide.pdf
+
+# Python bytecode
+__pycache__/
+*.pyc

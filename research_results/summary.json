@@ -1,0 +1,339 @@
+{
+  "baseline_passes": 32,
+  "overall": {
+    "cases": 17664,
+    "no_done_within_40_cycles": 768,
+    "correct_output_wrong_time": 128,
+    "wrong_output_on_time": 15360,
+    "wrong_completed_outputs": 16768,
+    "wrong_outputs_passing_timing_and_range": 14493,
+    "wrong_output_wrong_time": 1408,
+    "wrong_completed_outputs_out_of_range": 867
+  },
+  "by_register_group": {
+    "state": {
+      "cases": 768,
+      "no_done_within_40_cycles": 768
+    },
+    "stage": {
+      "cases": 768,
+      "correct_output_wrong_time": 24,
+      "wrong_output_wrong_time": 744,
+      "wrong_completed_outputs": 744
+    },
+    "counter": {
+      "cases": 768,
+      "correct_output_wrong_time": 104,
+      "wrong_output_wrong_time": 664,
+      "wrong_completed_outputs": 664
+    },
+    "mem": {
+      "cases": 15360,
+      "wrong_output_on_time": 15360,
+      "wrong_completed_outputs": 15360,
+      "wrong_outputs_passing_timing_and_range": 14493,
+      "wrong_completed_outputs_out_of_range": 867
+    }
+  },
+  "by_vector": {
+    "0": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "correct_output_wrong_time": 48,
+      "wrong_output_on_time": 480,
+      "wrong_completed_outputs": 480,
+      "wrong_outputs_passing_timing_and_range": 480
+    },
+    "1": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 42,
+      "wrong_completed_outputs": 522,
+      "correct_output_wrong_time": 6,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 477,
+      "wrong_completed_outputs_out_of_range": 3
+    },
+    "2": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 42,
+      "wrong_completed_outputs": 522,
+      "correct_output_wrong_time": 6,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 438,
+      "wrong_completed_outputs_out_of_range": 42
+    },
+    "3": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 418,
+      "wrong_completed_outputs_out_of_range": 62
+    },
+    "4": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 455,
+      "wrong_completed_outputs_out_of_range": 25
+    },
+    "5": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 36,
+      "wrong_completed_outputs": 516,
+      "correct_output_wrong_time": 12,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 474,
+      "wrong_completed_outputs_out_of_range": 6
+    },
+    "6": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 44,
+      "wrong_completed_outputs": 524,
+      "correct_output_wrong_time": 4,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 468,
+      "wrong_completed_outputs_out_of_range": 12
+    },
+    "7": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 40,
+      "wrong_completed_outputs": 520,
+      "correct_output_wrong_time": 8,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 459,
+      "wrong_completed_outputs_out_of_range": 21
+    },
+    "8": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 44,
+      "wrong_completed_outputs": 524,
+      "correct_output_wrong_time": 4,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 456,
+      "wrong_completed_outputs_out_of_range": 24
+    },
+    "9": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 36,
+      "wrong_completed_outputs": 516,
+      "correct_output_wrong_time": 12,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 459,
+      "wrong_completed_outputs_out_of_range": 21
+    },
+    "10": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 44,
+      "wrong_completed_outputs": 524,
+      "correct_output_wrong_time": 4,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 462,
+      "wrong_completed_outputs_out_of_range": 18
+    },
+    "11": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 40,
+      "wrong_completed_outputs": 520,
+      "correct_output_wrong_time": 8,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 459,
+      "wrong_completed_outputs_out_of_range": 21
+    },
+    "12": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 44,
+      "wrong_completed_outputs": 524,
+      "correct_output_wrong_time": 4,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 456,
+      "wrong_completed_outputs_out_of_range": 24
+    },
+    "13": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 36,
+      "wrong_completed_outputs": 516,
+      "correct_output_wrong_time": 12,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 459,
+      "wrong_completed_outputs_out_of_range": 21
+    },
+    "14": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 452,
+      "wrong_completed_outputs_out_of_range": 28
+    },
+    "15": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 459,
+      "wrong_completed_outputs_out_of_range": 21
+    },
+    "16": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 446,
+      "wrong_completed_outputs_out_of_range": 34
+    },
+    "17": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 420,
+      "wrong_completed_outputs_out_of_range": 60
+    },
+    "18": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 447,
+      "wrong_completed_outputs_out_of_range": 33
+    },
+    "19": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 461,
+      "wrong_completed_outputs_out_of_range": 19
+    },
+    "20": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 440,
+      "wrong_completed_outputs_out_of_range": 40
+    },
+    "21": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 454,
+      "wrong_completed_outputs_out_of_range": 26
+    },
+    "22": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 437,
+      "wrong_completed_outputs_out_of_range": 43
+    },
+    "23": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 453,
+      "wrong_completed_outputs_out_of_range": 27
+    },
+    "24": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 439,
+      "wrong_completed_outputs_out_of_range": 41
+    },
+    "25": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 457,
+      "wrong_completed_outputs_out_of_range": 23
+    },
+    "26": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 452,
+      "wrong_completed_outputs_out_of_range": 28
+    },
+    "27": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 455,
+      "wrong_completed_outputs_out_of_range": 25
+    },
+    "28": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 451,
+      "wrong_completed_outputs_out_of_range": 29
+    },
+    "29": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 447,
+      "wrong_completed_outputs_out_of_range": 33
+    },
+    "30": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 444,
+      "wrong_completed_outputs_out_of_range": 36
+    },
+    "31": {
+      "cases": 552,
+      "no_done_within_40_cycles": 24,
+      "wrong_output_wrong_time": 48,
+      "wrong_completed_outputs": 528,
+      "wrong_output_on_time": 480,
+      "wrong_outputs_passing_timing_and_range": 459,
+      "wrong_completed_outputs_out_of_range": 21
+    }
+  },
+  "interpretation": "Counts over this specified campaign, not physical fault probabilities. Timing/range detection is inferred from results; no detector was added to RTL. A 40-cycle timeout is not proof of permanent nontermination."
+}

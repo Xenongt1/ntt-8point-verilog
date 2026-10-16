@@ -1,0 +1,35 @@
+{
+  "baselines": 128,
+  "counts": {
+    "0": {
+      "cases": 70656,
+      "timeout": 3072,
+      "wrong_rejected_by_pair": 51626,
+      "wrong_accepted_by_pair": 15958,
+      "wrong_passing_timing_range": 57825,
+      "additionally_detected_by_pair": 44509,
+      "remaining_after_pair": 13316
+    },
+    "1": {
+      "cases": 15360,
+      "correct_rejected_by_pair": 15360
+    },
+    "2": {
+      "cases": 70656,
+      "timeout": 3072,
+      "wrong_rejected_by_pair": 65834,
+      "wrong_passing_timing_range": 57825,
+      "additionally_detected_by_pair": 56234,
+      "wrong_accepted_by_pair": 1750,
+      "remaining_after_pair": 1591
+    },
+    "3": {
+      "cases": 70656,
+      "timeout": 3072,
+      "wrong_accepted_by_pair": 67584,
+      "wrong_passing_timing_range": 57825,
+      "remaining_after_pair": 57825
+    }
+  },
+  "limits": "Checker input capture and combinational arithmetic not faulted. Clock, reset, start, shared input bus and external consumer excluded. Timing/range filters remain offline. No synthesis, area, timing closure, physical fault probabilities or cryptographic exploit demonstrated."
+}

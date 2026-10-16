@@ -1,0 +1,18 @@
+BASELINES: 32/32 matched the mathematical reference in 12 cycles.
+FAULT CASES: 17664
+correct_output_on_time: 0
+correct_output_wrong_time: 128
+wrong_output_on_time: 15360
+wrong_output_wrong_time: 1408
+no_done_within_40_cycles: 768
+unknown_output: 0
+
+Wrong outputs passing BOTH timing and final-output-range checks:
+  state: 0 / 768 injected cases
+  stage: 0 / 768 injected cases
+  counter: 0 / 768 injected cases
+  mem: 14493 / 15360 injected cases
+
+Raw data: research_results/faults.csv
+Details: research_results/summary.json
+Run identity and inputs: research_results/metadata.json

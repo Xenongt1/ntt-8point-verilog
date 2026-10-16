@@ -17,7 +17,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--vectors', type=int, default=512)
     p.add_argument('--seed', type=int, default=20261015)
-    p.add_argument('--selection', type=Path, default=Path('research_results'))
+    p.add_argument('--selection', type=Path, default=Path('fault-injection/results_selection_32'))
     a = p.parse_args()
     if not 1 <= a.vectors <= 100000:
         sys.exit('Choose between 1 and 100000 validation vectors.')
@@ -29,7 +29,7 @@ def main():
     for tool in ('iverilog', 'vvp'):
         if not shutil.which(tool):
             sys.exit(f'Missing {tool}')
-    out = Path(f'research_validation_{a.seed}_{a.vectors}')
+    out = Path(f'fault-injection/results_validation_{a.seed}_{a.vectors}')
     if out.exists():
         sys.exit(f'{out} already exists; preserving it. Use another seed for a new campaign.')
     rng = random.Random(a.seed)
@@ -45,7 +45,7 @@ def main():
     out.mkdir()
     for name, key in (('inputs.hex', 'input'), ('expected.hex', 'expected')):
         (out / name).write_text(''.join(f"{original.pack(v[key]):010x}\n" for v in vectors))
-    bench = original.TESTBENCH.replace('research_results/', out.as_posix() + '/')
+    bench = original.TESTBENCH.replace('fault-injection/results_selection_32/', out.as_posix() + '/')
     (out / 'tb_fault_sweep.v').write_text(bench)
     meta = dict(selection)
     meta.update(started_utc=datetime.now(timezone.utc).isoformat(), random_seed=a.seed,
@@ -82,7 +82,7 @@ def main():
     _, _, counts = read_campaign(out)
     print('Validated complete campaign:', dict(counts))
     print('Now run:')
-    print(f'python3 research/compare_checks.py --selection {a.selection} --validation {out}')
+    print(f'python3 fault-injection/scripts/compare_checks.py --selection {a.selection} --validation {out}')
 
 
 if __name__ == '__main__':

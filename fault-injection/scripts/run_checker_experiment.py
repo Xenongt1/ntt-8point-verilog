@@ -50,7 +50,7 @@ endmodule
 
 
 def make_bench(folder):
-    tb = old.TESTBENCH.replace('research_results/', folder + '/')
+    tb = old.TESTBENCH.replace('fault-injection/results_selection_32/', folder + '/')
     tb = tb.replace('integer elapsed, finished, value_before, value_after;', '''
     integer elapsed, finished, value_before, value_after;
     integer mode, cb;
@@ -145,11 +145,11 @@ def main():
         if not shutil.which(tool): sys.exit(f'Missing {tool}')
     rtl = [Path('rtl') / n for n in old.RTL_NAMES]
     if not all(f.exists() for f in rtl): sys.exit('Run from the repository root.')
-    out = Path(f'research_checker_{a.seed}_{a.vectors}')
+    out = Path(f'fault-injection/results_checker_{a.seed}_{a.vectors}')
     if out.exists(): sys.exit(f'{out} exists; preserving it. Choose a different seed.')
     # New unique random inputs; avoid input vectors in earlier campaign metadata.
     exclude = set()
-    for f in Path('.').glob('research*/metadata.json'):
+    for f in Path('fault-injection').glob('results_*/metadata.json'):
         for v in json.loads(f.read_text()).get('vectors', []): exclude.add(tuple(v['input']))
     rng = random.Random(a.seed)
     vectors = []

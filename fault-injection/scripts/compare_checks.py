@@ -67,7 +67,7 @@ def score(positions, masks):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--selection', type=Path, default=Path('research_results'))
+    parser.add_argument('--selection', type=Path, default=Path('fault-injection/results_selection_32'))
     parser.add_argument('--validation', type=Path)
     args = parser.parse_args()
     meta, masks, counts = read_campaign(args.selection)

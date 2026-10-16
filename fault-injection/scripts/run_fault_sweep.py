@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Run a reproducible, single-bit RTL fault experiment on the 8-point NTT.
 
-Run from the repository root: python3 research/run_fault_sweep.py
+Run from the repository root: python3 fault-injection/scripts/run_fault_sweep.py
 Requires Python 3, iverilog and vvp. Uses only the Python standard library.
-Does not modify RTL. Generated files and raw results go to research_results/.
+Does not modify RTL. Generated files and raw results go to
+fault-injection/results_selection_32/.
 """
 import csv
 import hashlib
@@ -117,9 +118,9 @@ module tb_fault_sweep;
     endtask
 
     initial begin
-        $readmemh("research_results/inputs.hex", inputs);
-        $readmemh("research_results/expected.hex", expected);
-        fd = $fopen("research_results/faults.csv", "w");
+        $readmemh("fault-injection/results_selection_32/inputs.hex", inputs);
+        $readmemh("fault-injection/results_selection_32/expected.hex", expected);
+        fd = $fopen("fault-injection/results_selection_32/faults.csv", "w");
         if (!fd) $fatal(1, "Cannot open CSV output");
         $fdisplay(fd, "vector,target,bit,cycle,before,after,done,elapsed,output_hex");
         total = 0;
@@ -174,10 +175,10 @@ def main():
     for tool in ("iverilog", "vvp"):
         if shutil.which(tool) is None:
             sys.exit(f"Required tool not found: {tool}")
-    out = root / "research_results"
+    out = root / "fault-injection" / "results_selection_32"
     out.mkdir(exist_ok=True)
     if (out / "faults.csv").exists():
-        sys.exit("research_results/faults.csv already exists. Rename research_results before rerunning to preserve that run.")
+        sys.exit("fault-injection/results_selection_32/faults.csv already exists. Rename that folder before rerunning to preserve that run.")
     vectors = test_vectors()
     references = [reference(x) for _, x in vectors]
     assert len(vectors) == 32
@@ -209,11 +210,11 @@ def main():
     compiled = subprocess.run(compile_cmd, capture_output=True, text=True)
     (out / "compile.log").write_text(compiled.stdout + compiled.stderr)
     if compiled.returncode:
-        sys.exit("Compilation failed. Share research_results/compile.log.")
+        sys.exit("Compilation failed. Share fault-injection/results_selection_32/compile.log.")
     simulation = subprocess.run(["vvp", str(binary)], capture_output=True, text=True)
     (out / "simulation.log").write_text(simulation.stdout + simulation.stderr)
     if simulation.returncode or "COMPLETE vectors=32 fault_cases=17664" not in simulation.stdout:
-        sys.exit("Simulation did not complete successfully. Share research_results/simulation.log.")
+        sys.exit("Simulation did not complete successfully. Share fault-injection/results_selection_32/simulation.log.")
     if simulation.stdout.count("BASELINE PASS") != 32:
         sys.exit("Expected 32 baseline passes; inspect simulation.log.")
 
@@ -263,9 +264,9 @@ def main():
     for group in ("state", "stage", "counter", "mem"):
         counter = by_group[group]
         lines.append(f"  {group}: {counter['wrong_outputs_passing_timing_and_range']} / {counter['cases']} injected cases")
-    lines += ["", "Raw data: research_results/faults.csv",
-              "Details: research_results/summary.json",
-              "Run identity and inputs: research_results/metadata.json"]
+    lines += ["", "Raw data: fault-injection/results_selection_32/faults.csv",
+              "Details: fault-injection/results_selection_32/summary.json",
+              "Run identity and inputs: fault-injection/results_selection_32/metadata.json"]
     report = "\n".join(lines) + "\n"
     (out / "summary.txt").write_text(report)
     print(report)
